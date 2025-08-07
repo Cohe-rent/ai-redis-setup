@@ -3,35 +3,23 @@
 This setup was AI-generated using OpenRouter and the meta-llama/llama-3-8b-instruct model.
 
 ```
-Here is a Docker Compose configuration to run Redis in a container with persistent volume, default port 6379 exposed to the host, and basic authentication enabled:
+Here is the Docker Compose configuration file to run Redis in a container with persistent volume, default port 6379 exposed to the host, and basic authentication enabled:
+
 ```
 version: '3'
 services:
   redis:
     image: redis:alpine
+    volumes:
+      - ./redis-data:/data
     ports:
       - "6379:6379"
-    volumes:
-      - redis-data:/data
     environment:
       - REDIS_PASSWORD=your_secret_password
-      - REDIS_REQUIRE_PASSWORD=yes
-    restart: always
-
-volumes:
-  redis-data:
+      - REDIS_REQUIREPASS=yes
 ```
-Let me explain what each part does:
 
-* `version: '3'` specifies the Docker Compose version.
-* `services:` defines a service named `redis`.
-* `image: redis:alpine` uses the official Redis Alpine image.
-* `ports:` exposes port 6379 from the container to the host.
-* `volumes:` mounts a persistent volume named `redis-data` to the container.
-* `environment:` sets environment variables for the container:
-	+ `REDIS_PASSWORD=your_secret_password` sets the Redis password.
-	+ `REDIS_REQUIRE_PASSWORD=yes` enables basic authentication.
-* `restart: always` ensures the container restarts if it exits.
+Please replace `your_secret_password` with a strong password of your choice to enable basic authentication.
 
-Note that you should replace `your_secret_password` with a strong and unique password for your Redis instance.
+Note: The `redis-data` volume will persist the Redis data even after the container is stopped or removed. If you want to specify a specific directory on the host machine, replace `./redis-data` with the path to that directory.
 ```
